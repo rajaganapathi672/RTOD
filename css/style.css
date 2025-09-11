@@ -1,0 +1,65 @@
+body {
+    background-color: #f8f9fa;
+    padding-top: 20px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: none;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+#webcamFeed {
+    max-width: 100%;
+    height: auto;
+    background-color: #000;
+}
+
+#uploadForm {
+    margin-bottom: 20px;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    margin: 0 10px;
+}
+
+.display-6 {
+    font-size: 2rem;
+    font-weight: 300;
+}
+
+.list-group-item {
+    padding: 0.75rem 1.25rem;
+}
+
+.badge {
+    font-size: 0.9em;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+#originalPreview, #resultPreview {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+}
