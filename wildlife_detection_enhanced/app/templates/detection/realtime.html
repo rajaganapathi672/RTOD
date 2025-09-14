@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Real-time Detection{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🐾 Wildlife AI</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{{ url_for('dashboard.index') }}">📊 Dashboard</a></li>
+            <li class="active"><a href="{{ url_for('detection.realtime') }}">📹 Real-time Detection</a></li>
+            <li><a href="{{ url_for('detection.upload') }}">📤 Upload Detection</a></li>
+            <li><a href="{{ url_for('detection.history') }}">📜 Detection History</a></li>
+            {% if session.get('user_type') == 'admin' %}
+            <li><a href="{{ url_for('admin.users') }}">👥 User Management</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('auth.logout') }}">🚪 Logout</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Real-time Wildlife Detection</h1>
+        </div>
+        
+        <div class="detection-container">
+            <div class="video-section">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <img id="detectionFrame" alt="Detection Feed">
+            </div>
+            
+            <div class="controls">
+                <button id="startBtn" class="btn btn-success">Start Detection</button>
+                <button id="stopBtn" class="btn btn-danger" style="display:none;">Stop Detection</button>
+            </div>
+            
+            <div class="detection-stats">
+                <div class="stat-box">
+                    <h3 id="humanCount">0</h3>
+                    <p>Humans</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="animalCount">0</h3>
+                    <p>Animals</p>
+                </div>
+                <div class="stat-box animals-list">
+                    <h4>Detected Species:</h4>
+                    <div id="animalsList">None</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/realtime.js') }}"></script>
+{% endblock %}
+       
