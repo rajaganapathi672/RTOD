@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Verify OTP - Wildlife Detection{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="auth-header">
+            <div class="logo">📧</div>
+            <h1>Email Verification</h1>
+            <p>Enter the OTP sent to {{ email }}</p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" class="auth-form">
+            <input type="hidden" name="email" value="{{ email }}">
+            
+            <div class="form-group">
+                <label for="otp">6-Digit OTP</label>
+                <input type="text" id="otp" name="otp" required placeholder="000000" maxlength="6" pattern="[0-9]{6}">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Verify OTP</button>
+        </form>
+        
+        <form method="POST" action="{{ url_for('auth.resend_otp') }}" class="resend-form">
+            <input type="hidden" name="email" value="{{ email }}">
+            <button type="submit" class="btn btn-secondary">Resend OTP</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+     
