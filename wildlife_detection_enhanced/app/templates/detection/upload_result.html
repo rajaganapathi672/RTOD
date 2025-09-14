@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Detection Results{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🐾 Wildlife AI</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{{ url_for('dashboard.index') }}">📊 Dashboard</a></li>
+            <li><a href="{{ url_for('detection.realtime') }}">📹 Real-time Detection</a></li>
+            <li class="active"><a href="{{ url_for('detection.upload') }}">📤 Upload Detection</a></li>
+            <li><a href="{{ url_for('detection.history') }}">📜 Detection History</a></li>
+            {% if session.get('user_type') == 'admin' %}
+            <li><a href="{{ url_for('admin.users') }}">👥 User Management</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('auth.logout') }}">🚪 Logout</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Detection Results</h1>
+        </div>
+        
+        <div class="result-container">
+            <div class="result-stats">
+                <div class="stat-card">
+                    <h2>{{ detection.human_count }}</h2>
+                    <p>Humans Detected</p>
+                </div>
+                <div class="stat-card">
+                    <h2>{{ detection.animal_count }}</h2>
+                    <p>Animals Detected</p>
+                </div>
+            </div>
+            
+            <div class="result-details">
+                <h3>Detailed Analysis:</h3>
+                {% if detection.detected_animals and detection.detected_animals != 'None' %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Species</th>
+                                    <th>Category</th>
+                                    <th>Confidence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set details = detection.detection_details | default('[]') | from_json %}
+                                {% for item in details %}
+                                    <tr>
+                                        <td>
+                                            <span class="badge {% if item.type == 'human' %}badge-warning{% else %}badge-success{% endif %}">
+                                                {{ item.class }}
+                                            </span>
+                                        </td>
+                                        <td>{{ item.category | default('Entity') }}</td>
+                                        <td>{{ (item.confidence * 100) | round(1) }}%</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <p>No specific animals identified with high confidence.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="result-media">
+                {% if file_type == 'image' %}
+                <img src="{{ processed_url }}" alt="Processed Image">
+                {% else %}
+                <video controls>
+                    <source src="{{ processed_url }}" type="video/mp4">
+                </video>
+                {% endif %}
+            </div>
+            
+            <div class="result-actions">
+                <a href="{{ url_for('detection.upload') }}" class="btn btn-primary">Upload Another</a>
+                <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+       
