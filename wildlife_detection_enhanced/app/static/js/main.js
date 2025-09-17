@@ -155,4 +155,4 @@ function hideLoading(button, text) {
     button.disabled = false;
     button.innerHTML = text;
 }
-        
+         
