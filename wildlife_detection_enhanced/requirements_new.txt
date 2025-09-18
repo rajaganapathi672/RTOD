@@ -1,0 +1,17 @@
+Flask
+Flask-SQLAlchemy
+Werkzeug
+ultralytics
+opencv-python
+Pillow
+python-dotenv
+email-validator
+torch
+torchvision
+numpy
+Flask-SocketIO
+python-socketio
+scikit-learn
+matplotlib
+seaborn
+             
