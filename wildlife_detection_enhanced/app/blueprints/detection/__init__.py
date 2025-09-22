@@ -359,4 +359,4 @@ def get_notifications():
     except Exception as e:
         logger.error(f"Get notifications error: {str(e)}")
         return jsonify({'error': str(e)}), 500
-          
+           
