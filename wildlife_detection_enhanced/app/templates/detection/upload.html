@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Upload Detection{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🐾 Wildlife AI</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{{ url_for('dashboard.index') }}">📊 Dashboard</a></li>
+            <li><a href="{{ url_for('detection.realtime') }}">📹 Real-time Detection</a></li>
+            <li class="active"><a href="{{ url_for('detection.upload') }}">📤 Upload Detection</a></li>
+            <li><a href="{{ url_for('detection.history') }}">📜 Detection History</a></li>
+            {% if session.get('user_type') == 'admin' %}
+            <li><a href="{{ url_for('admin.users') }}">👥 User Management</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('auth.logout') }}">🚪 Logout</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Upload Image or Video</h1>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="upload-container">
+            <form method="POST" enctype="multipart/form-data" class="upload-form">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <h3>Drop files here or click to upload</h3>
+                    <p>Supported: JPG, PNG, MP4, AVI, MOV, MKV</p>
+                    <input type="file" name="file" id="fileInput" accept="image/*,video/*" required>
+                </div>
+                
+                <div id="filePreview" style="display:none;">
+                    <h3>File Preview:</h3>
+                    <div id="previewContent"></div>
+                    <p id="fileName"></p>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-large">Analyze File</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}
+       
