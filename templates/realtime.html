@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Object Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #35424a;
+            color: white;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #e8491d 3px solid;
+        }
+        header a {
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            overflow: hidden;
+        }
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        header #branding {
+            float: left;
+        }
+        header #branding h1 {
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+        .content {
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .video-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background: #e8491d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #35424a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Real-Time Object Detection</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/realtime">Real-Time</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <h2>Live Camera Feed</h2>
+            <div class="video-container">
+                <img id="video-feed" src="{{ url_for('video_feed') }}" width="640" height="480">
+            </div>
+            <div class="controls">
+                <button id="start-btn">Start Camera</button>
+                <button id="stop-btn">Stop Camera</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Start camera automatically when page loads
+        window.onload = function() {
+            startCamera();
+        };
+
+        function startCamera() {
+            fetch('/start_camera')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Camera status:', data.status);
+                    // Force refresh the video feed with cache busting
+                    document.getElementById('video-feed').src = "{{ url_for('video_feed') }}?t=" + new Date().getTime();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.getElementById('start-btn').addEventListener('click', startCamera);
+
+        document.getElementById('stop-btn').addEventListener('click', function() {
+            fetch('/stop_camera')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Camera status:', data.status);
+                    // Clear the video feed
+                    document.getElementById('video-feed').src = "";
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

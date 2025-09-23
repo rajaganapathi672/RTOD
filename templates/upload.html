@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-upload"></i> Upload Media for Detection
+            </div>
+            <div class="card-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">Select image or video:</label>
+                        <input class="form-control" type="file" id="fileInput" name="file" accept="image/*, video/*" required>
+                        <div class="form-text">Maximum file size: 16MB. Supported formats: JPG, JPEG, PNG, MP4, AVI</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-magic"></i> Detect Objects
+                    </button>
+                </form>
+                
+                <div id="errorAlert" class="alert alert-danger mt-3" style="display: none;"></div>
+                
+                <div id="results" class="mt-4" style="display: none;">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <i class="bi bi-check-circle"></i> Detection Results
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Original</h5>
+                                    <img id="originalPreview" class="img-fluid rounded" style="max-height: 300px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Result</h5>
+                                    <img id="resultPreview" class="img-fluid rounded" style="max-height: 300px;">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <p><strong>Processing Time:</strong> <span id="processingTime"></span> seconds</p>
+                                    <p><strong>Objects Detected:</strong> <span id="objectCount"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Detected Objects:</strong></p>
+                                    <ul id="detectedObjects" class="list-group">
+                                        <!-- Objects will be listed here -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

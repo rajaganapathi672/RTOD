@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-graph-up"></i> Detection Statistics
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Detections</h5>
+                                <p class="card-text display-6">{{ processed_files|length }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Today's Detections</h5>
+                                <p class="card-text display-6">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Most Detected Object</h5>
+                                <p class="card-text display-6">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-danger mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Average Processing Time</h5>
+                                <p class="card-text display-6">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-list-ul"></i> Recent Detections
+            </div>
+            <div class="card-body">
+                {% if processed_files %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Original File</th>
+                                <th>Processed File</th>
+                                <th>Timestamp</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in processed_files %}
+                            <tr>
+                                <td>{{ file.original }}</td>
+                                <td>{{ file.result }}</td>
+                                <td>{{ file.timestamp }}</td>
+                                <td>
+                                    <a href="{{ url_for('results', filename=file.result) }}" class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    No detection results yet. Upload an image or video to get started.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
