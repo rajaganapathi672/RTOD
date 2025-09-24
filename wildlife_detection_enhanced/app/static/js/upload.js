@@ -68,4 +68,4 @@ function handleFileSelect() {
     
     reader.readAsDataURL(file);
 }
-            
+             
