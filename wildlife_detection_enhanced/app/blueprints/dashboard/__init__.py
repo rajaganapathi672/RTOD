@@ -54,4 +54,4 @@ def index():
         recent_detections=recent_detections,
         unread_notifications=unread_count
     )
-       
+        
