@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Wildlife Detection{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🐾 Wildlife AI</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active"><a href="{{ url_for('dashboard.index') }}">📊 Dashboard</a></li>
+            <li><a href="{{ url_for('detection.realtime') }}">📹 Real-time Detection</a></li>
+            <li><a href="{{ url_for('detection.upload') }}">📤 Upload Detection</a></li>
+            <li><a href="{{ url_for('detection.history') }}">📜 Detection History</a></li>
+            {% if user_type == 'admin' %}
+            <li><a href="{{ url_for('admin.users') }}">👥 User Management</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('auth.logout') }}">🚪 Logout</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Welcome, {{ user_name }}!</h1>
+            <div class="top-bar-actions">
+                <!-- Notification Bell -->
+                <div class="notification-bell" id="notificationBell">
+                    🔔
+                    {% if unread_notifications > 0 %}
+                    <span class="badge">{{ unread_notifications }}</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="theme-toggle">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+                
+                <div class="user-badge">{{ user_type|upper }}</div>
+            </div>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_detections }}</h3>
+                    <p>Total Detections</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👤</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_humans }}</h3>
+                    <p>Humans Detected</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🦁</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_animals }}</h3>
+                    <p>Animals Detected</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📹</div>
+                <div class="stat-info">
+                    <h3>{{ stats.realtime_count }}</h3>
+                    <p>Real-time Scans</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-icon">📹</div>
+                <h3>Real-time Detection</h3>
+                <p>Monitor live camera feed with AI detection</p>
+                <a href="{{ url_for('detection.realtime') }}" class="btn btn-primary">Launch</a>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">📤</div>
+                <h3>Upload Detection</h3>
+                <p>Analyze images and videos</p>
+                <a href="{{ url_for('detection.upload') }}" class="btn btn-primary">Upload</a>
+            </div>
+        </div>
+        
+        {% if recent_detections %}
+        <div class="recent-section">
+            <h2>Recent Detections</h2>
+            <div class="table-container">
+                <table class="detection-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Humans</th>
+                            <th>Animals</th>
+                            <th>Detected Species</th>
+                            <th>Timestamp</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detection in recent_detections %}
+                        <tr>
+                            <td><span class="badge badge-{{ detection.detection_type }}">{{ detection.detection_type }}</span></td>
+                            <td>{{ detection.human_count }}</td>
+                            <td>{{ detection.animal_count }}</td>
+                            <td>{{ detection.detected_animals or 'None' }}</td>
+                            <td>{{ detection.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="viewDetection({{ detection.id }})">
+                                    👁️ View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Detection View Modal -->
+<div id="detectionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detection Details</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="modal-stats">
+                <div class="modal-stat">
+                    <h3 id="modalHumans">0</h3>
+                    <p>👤 Humans</p>
+                </div>
+                <div class="modal-stat">
+                    <h3 id="modalAnimals">0</h3>
+                    <p>🦁 Animals</p>
+                </div>
+            </div>
+            
+            <p><strong>Timestamp:</strong> <span id="modalTimestamp"></span></p>
+            <p><strong>Detection Type:</strong> <span id="modalType"></span></p>
+            <p><strong>Species Detected:</strong> <span id="modalSpecies"></span></p>
+            
+            <div id="modalMedia"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+     
