@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin Login - Wildlife Detection{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="auth-header">
+            <div class="logo">🔐</div>
+            <h1>Wildlife Detection System</h1>
+            <p>Administrator Login</p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="email">Admin Email</label>
+                <input type="email" id="email" name="email" required placeholder="admin@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter admin password">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Admin Login</button>
+        </form>
+        
+        <div class="auth-links">
+            <p><a href="{{ url_for('auth.login') }}">Back to User Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+       
