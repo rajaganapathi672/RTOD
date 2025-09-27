@@ -125,4 +125,4 @@ For issues:
 ---
 
 **Enjoy your Wildlife Detection System! 🐾**
-      
+       
