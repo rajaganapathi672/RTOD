@@ -549,4 +549,4 @@ class EmailService:
             logger.info(f"Admin alert email: {admin_msg}")
         
         return user_success, user_msg
-       
+        
