@@ -175,4 +175,4 @@ class NotificationManager:
         session.modified = True
         
         return original_count - len(session['notifications'])
-         
+          
