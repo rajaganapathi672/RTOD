@@ -292,4 +292,4 @@ def toggle_theme():
             logger.info(f"Theme updated for user {user.email}: {theme}")
     
     return jsonify({'success': True, 'theme': theme})
-         
+          
