@@ -154,4 +154,4 @@ class OTP(db.Model):
         db.session.commit()
         
         return otp
-               
+                
