@@ -1,0 +1,6 @@
+flask
+flask-login
+werkzeug
+opencv-python
+ultralytics
+numpy

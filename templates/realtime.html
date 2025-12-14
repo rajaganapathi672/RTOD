@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="glass-card text-center">
+            <div class="card-header bg-transparent border-bottom-0 pt-4 px-4">
+                <h2 class="mb-0 fw-bold"><i class="bi bi-camera-video text-gradient"></i> Real-Time Object Detection
+                </h2>
+                <p class="text-muted mt-2">Live camera feed with real-time detection</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="video-container position-relative bg-dark rounded-3 overflow-hidden shadow-lg mx-auto"
+                    style="max-width: 800px; min-height: 480px;">
+                    <div class="position-absolute top-50 start-50 translate-middle text-white-50 z-0">
+                        <i class="bi bi-camera-video-off display-1"></i>
+                        <p class="mt-2">Camera is stopped</p>
+                    </div>
+                    <img id="video-feed" src="" class="img-fluid position-relative z-1"
+                        style="min-width: 100%; min-height: 480px; object-fit: contain;">
+                </div>
+
+                <div class="controls mt-4 d-flex justify-content-center gap-3">
+                    <button id="start-btn" class="btn btn-lg btn-success px-5 rounded-pill shadow-sm">
+                        <i class="bi bi-play-circle-fill me-2"></i> Start Camera
+                    </button>
+                    <button id="stop-btn" class="btn btn-lg btn-danger px-5 rounded-pill shadow-sm">
+                        <i class="bi bi-stop-circle-fill me-2"></i> Stop Camera
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Start camera automatically when page loads
+    window.onload = function () {
+        startCamera();
+    };
+
+    function startCamera() {
+        // Show loading state or placeholder if needed
+        const feed = document.getElementById('video-feed');
+
+        fetch('/start_camera')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Camera status:', data.status);
+                // Force refresh the video feed with cache busting
+                feed.src = "{{ url_for('video_feed') }}?t=" + new Date().getTime();
+                feed.style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    document.getElementById('start-btn').addEventListener('click', startCamera);
+
+    document.getElementById('stop-btn').addEventListener('click', function () {
+        fetch('/stop_camera')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Camera status:', data.status);
+                // Clear the video feed
+                const feed = document.getElementById('video-feed');
+                feed.src = "";
+                feed.style.display = 'none'; // This reveals the "Camera is stopped" placeholder behind it
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+{% endblock %}

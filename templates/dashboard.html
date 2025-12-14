@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4 display-5 fw-bold"><i class="bi bi-speedometer2 text-gradient"></i> Dashboard</h1>
+
+        <div class="glass-card mb-4">
+            <div class="card-header bg-transparent border-bottom-0 pt-4 px-4">
+                <h4 class="mb-0"><i class="bi bi-graph-up text-primary"></i> Detection Statistics</h4>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="stat-card bg-primary p-3 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="text-white-50 text-uppercase small ls-1">Total Detections</h6>
+                                <h2 class="display-4 fw-bold mb-0">{{ processed_files|length }}</h2>
+                            </div>
+                            <i
+                                class="bi bi-files display-6 text-white-50 position-absolute end-0 bottom-0 m-3 opacity-25"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card bg-info p-3 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="text-white-50 text-uppercase small ls-1">Today's Detections</h6>
+                                <h2 class="display-4 fw-bold mb-0">0</h2>
+                            </div>
+                            <i
+                                class="bi bi-calendar-check display-6 text-white-50 position-absolute end-0 bottom-0 m-3 opacity-25"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card bg-warning p-3 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="text-white-50 text-uppercase small ls-1">Most Detected</h6>
+                                <h2 class="display-6 fw-bold mb-0">-</h2>
+                            </div>
+                            <i
+                                class="bi bi-trophy display-6 text-white-50 position-absolute end-0 bottom-0 m-3 opacity-25"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card bg-danger p-3 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="text-white-50 text-uppercase small ls-1">Avg Process Time</h6>
+                                <h2 class="display-6 fw-bold mb-0">-</h2>
+                            </div>
+                            <i
+                                class="bi bi-stopwatch display-6 text-white-50 position-absolute end-0 bottom-0 m-3 opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-header bg-transparent border-bottom-0 pt-4 px-4">
+                <h4 class="mb-0"><i class="bi bi-list-ul text-primary"></i> Recent Detections</h4>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {% if processed_files %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Original File</th>
+                                <th>Processed File</th>
+                                <th>Timestamp</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in processed_files %}
+                            <tr>
+                                <td class="fw-bold text-gradient">{{ file.original }}</td>
+                                <td>{{ file.result }}</td>
+                                <td><span class="badge bg-light text-dark border">{{ file.timestamp }}</span></td>
+                                <td>
+                                    <a href="{{ url_for('results', filename=file.result) }}"
+                                        class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-light border-0 shadow-sm d-flex align-items-center">
+                    <i class="bi bi-info-circle-fill text-primary me-2 fs-4"></i>
+                    <div>
+                        No detection results yet. <a href="{{ url_for('upload') }}" class="alert-link">Upload an image
+                            or video</a> to get started.
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
