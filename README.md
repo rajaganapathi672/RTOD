@@ -13,7 +13,7 @@ RTOD is a web-based application built with **Flask** and **YOLOv8** that provide
 - **Backend**: Flask (Python)
 - **Object Detection**: ultralytics (YOLOv8)
 - **Image Processing**: OpenCV
-- **Frontend**: HTML, CSS, JavaScript.
+- **Frontend**: HTML, CSS, JavaScript
 
 ## Installation
 
