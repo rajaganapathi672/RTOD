@@ -7,7 +7,7 @@ RTOD is a web-based application built with **Flask** and **YOLOv8** that provide
 - **Image Detection**: Upload images (JPG, PNG) to detect objects.
 - **Video Detection**: Upload video files (MP4, AVI) for frame-by-frame object detection.
 - **Real-Time Webcam**: Live object detection using your computer's webcam.
-- **Dashboard**: View a history of processed files and results.
+- **Dashboard**: View a history of processed files and results
 
 ## Technologies Used
 - **Backend**: Flask (Python)
