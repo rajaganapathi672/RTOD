@@ -38,7 +38,7 @@ RTOD is a web-based application built with **Flask** and **YOLOv8** that provide
     ```
 
 2.  **Access the web interface**:
-    Open your browser and navigate to `http://127.0.0.1:5000`.
+    Open your browser and navigate to `http://127.0.0.1:5000`
 
 3.  **Navigate**:
     - Use the **Upload** page to process files.
